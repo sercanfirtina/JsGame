@@ -19,12 +19,51 @@
         var canvas = document.getElementById("canvas"),
             ctx = canvas.getContext("2d"), //canvas context created
             W = window.innerWidth, //playground width
-            H = window.innerHeight; //plagground height
+            H = window.innerHeight, //plagground height
+            pieces = [], //this array includes pieces
+            ball = {},
+            rod = [2];
 
         canvas.width = W;
         canvas.height = H;
-
+        ctx.fillStyle ="#FFFF00";
         ctx.fillRect(0, 0, W, H);
+
+        //describe ball object
+        ball = {
+            x: 50,
+            y: 50,
+            r: 5,
+            c: "blue",
+            xs:4, //speed of X-axis
+            ys:8,
+
+            draw: function () {
+                ctx.begnPath();
+                ctx.fillStyle = this.c;
+                ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
+                ctx.fill();
+            }
+        };
+
+
+        //created function for rod
+
+        function Shovel(positon) {
+            this.h = 5;
+            this.w = 150;
+
+            // shovel position
+
+            this.x = W / 2 - this.w / 2;
+            this.y = (position == "top") ? 0 : Y - this.y;
+        }
+
+        // add shovel to rod array
+        rod.push(new shovel("bottom"));
+        rod.push(new shovel("top"));
+
+
 
     </script>
 
