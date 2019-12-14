@@ -16,17 +16,31 @@
 
     <script type="text/javascript">
 
+        //for canvas animation 
+        window.animasyonFrameRequest = (function () {
+            return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function (callback) {
+                    return window.setTimeout(callback, 1000 / 60);
+                };
+        })();
+
+
+
         var canvas = document.getElementById("canvas"),
             ctx = canvas.getContext("2d"), //canvas context created
             W = window.innerWidth, //playground width
-            H = window.innerHeight, //plagground height
+            H = window.innerHeight, //playground height
             pieces = [], //this array includes pieces
             ball = {},
             rod = [2];
 
         canvas.width = W;
         canvas.height = H;
-        ctx.fillStyle ="#FFFF00";
+
         ctx.fillRect(0, 0, W, H);
 
         //describe ball object
@@ -39,7 +53,7 @@
             ys:8,
 
             draw: function () {
-                ctx.begnPath();
+                ctx.beginPath();
                 ctx.fillStyle = this.c;
                 ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
                 ctx.fill();
@@ -49,22 +63,46 @@
 
         //created function for rod
 
-        function Shovel(positon) {
+        function Shovel(position) {
             this.h = 5;
             this.w = 150;
 
             // shovel position
 
-            this.x = W / 2 - this.w / 2;
-            this.y = (position == "top") ? 0 : Y - this.y;
+            this.x = W/2 - this.w/2;
+            this.y = (position == "top") ? 0 : H - this.h;
         }
 
         // add shovel to rod array
-        rod.push(new shovel("bottom"));
-        rod.push(new shovel("top"));
+        rod.push(new Shovel("bottom"));
+        rod.push(new Shovel("top"));
 
 
+        function drawCanvas() {
+            ctx.fillStyle = "#FFFF00";
+            ctx.fillRect(0, 0, W, H);
+        }
 
+
+        function draw() {
+            drawCanvas();
+            for (var i = 0; i < rod.length; i++) {
+
+                p = rod[i];
+                ctx.fillStyle = "blue";
+                ctx.fillRect(p.x, p.y, p.w, p.h);
+            }
+            ball.draw();
+            update();
+        }
+
+        function animLoop() {
+            res = animasyonFrameRequest(animLoop);
+            draw();
+        }
+
+
+        animLoop();
     </script>
 
 </body>
